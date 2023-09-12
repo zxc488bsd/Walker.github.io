@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>諭凱的履歷</title>
+</head>
+<style>
+
+    /* 主要設置 */
+    *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+    }
+    
+    .main_background_color{
+        background-color: #38507F;
+    }
+    .main_color{
+        color: #38507F;
+    }
+    .minor_color{
+        color: #645656;
+    }
+
+    .white_color{
+        color: white;
+    }
+
+    .banner,.skill,.training,.project,.advantage_shortcoming{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    .skill,.training,.project,.advantage_shortcoming{
+        margin: 50px 0px;
+    }
+    .container{
+        width: 60%;
+    }
+    .container h2{
+        font-size: 35px;
+    }
+    h3{
+        font-size: 25px;
+    }
+    span{
+        font-size: 16px;
+    }
+    li{
+        margin: 10px;
+    }
+
+
+
+
+    /* 個別設置 */
+
+
+    /* banenr */
+    .banner_container{
+    display: flex;
+    width: 60%;
+    padding: 25px;
+    align-items: center;
+    justify-content: space-between;
+    }
+    .introduce{
+        width: 30%;
+    }
+    .introduce .img_introduce {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 50%; 
+    }
+
+    .introduce .img_introduce img {
+        width: 100%; 
+        height: auto; 
+        border-radius: 50%; 
+    }
+    .content{
+        width: 60%;
+    }
+    .content p{
+        font-size: 20px;
+    }
+
+    /* skill */
+    .skill .card_all{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.skill .card{
+    width: 20%;
+}
+
+.skill .card_all .card h3{
+    padding: 15px 0;
+    border-bottom: 2px solid #645656;
+}
+
+/* training */
+.training .card_all ,.project .card_all{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.training .card{
+    width: 40%;
+}
+.training .card h3 ,.project .card h3{
+    padding: 15px 0px;
+}
+
+/* project */
+
+.project .card{
+    width: 90%;
+}
+
+/* advantage_shortcoming */
+
+.advantage_shortcoming .card_all{
+    display: flex;
+    justify-content: space-between;
+}
+.advantage_shortcoming .card{
+    width: 50%;
+}
+.advantage_shortcoming ul{
+    margin-left: 50px;
+}
+</style>
+<body>
+    
+
+    <div class="banner main_background_color">
+        <div class="banner_container">
+
+            <div class="introduce">
+                <div class="img_introduce"><img src="./public/諭凱.jpg" alt=""></div>
+                <div class="word_introduce">
+                    <h1 class="white_color">翁諭凱 | Walker</h1>
+                    <h2 class="white_color">zxc4885bsd@gmail.com</h2>
+                </div>
+            </div>
+
+
+            <div class="content">
+                <p class="white_color">我大學時期自學程式開發，投入了約莫一年的時間，對於程式邏輯和前端技術如JavaScript、HTML、CSS有了初步的了解。</p>
+                <br>
+                <p class="white_color">在完成兵役後，我參加了坂和科技公司的軟體培訓課程，為期六個月，深入學習了JavaScript 程式邏輯。</p>
+                <br>
+                <p class="white_color">最重要的是，我有了機會參與專案的開發，並擔任了專案經理的角色。</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="skill">
+
+        <div class="container">
+            <h2 class="main_color">技能</h2>
+
+            <div class="card_all">
+
+                <div class="card">
+                    <h3 class="minor_color">Front-End</h3>
+                    <ul>
+                        <li>HTML、CSS</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="minor_color">Back-End</h3>
+                    <ul>
+                        <li>Node.js</li>
+                        <li>mySQL</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="minor_color">Other</h3>
+                    <ul>
+                        <li>Figma</li>
+                        <li>Trello</li>
+                        <li>Draw.io</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="training">
+        <div class="container">
+            <h2 class="main_color">培訓經驗</h2>
+
+            <div class="card_all">
+
+                <div class="card">
+                    <h3 class="minor_color">BOWA學院<span class="minor_color">2023/04/06 ~ 2023/09/30</span></h3>
+                    <ul>
+                        <li>原生JS底層邏輯、API串接資料、小遊戲製作</li>
+                        <li>Node.js、mySQL基礎運用</li>
+                        <li>自行尋找問題並且解決問題的能力</li>
+                        <li>專案流程指導與專案成果發表</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="minor_color">小遊戲區</h3>
+                    <ul>
+                        <li><a href="./小恐龍.html" target="_blank">小恐龍</a></li>
+                        <li><a href="./遊戲寶相pk大戰.html" target="_blank">寶箱爭奪</a></li>
+                        <li><a href="./OOXX遊戲.html" target="_blank">圈圈叉叉(與電腦pk)</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="project">
+
+        <div class="container">
+            <h2 class="main_color">專案經驗</h2>
+
+            <div class="card_all">
+                <div class="card">
+                    <h3 class="minor_color">電商網站平台<span class="minor_color">2023/06/30 ~ 2023/09/01</span></h3>
+                    <ul>
+                        <li>協助客戶蒐集 User Story，並轉化為可執行的任務和需求清單</li>
+                        <li>制定專案企劃書，確保項目目標、時程的達成</li>
+                        <li>領導團隊進行程式開發，監督專案進度，確保按時交付</li>
+                        <li>使用 Trello 進行專案控管，確保任務的跟蹤和優先順序的管理</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="advantage_shortcoming">
+        <div class="container">
+
+            <div class="card_all">
+                <div class="card">
+                    <h2 class="main_color">優勢</h2>
+                    <ul>
+                        <li>參與培訓後更深入了解程式邏輯</li>
+                        <li>培訓期間有專案管理經驗並熟練使用專案管理工具Trello</li>
+                        <li>願意傾聽團隊意見，不帶負面情緒影響團隊</li>
+                        <li>熱愛解決問題，具有自主學習和改進的動力</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2 class="main_color">劣勢</h2>
+                    <ul>
+                        <li>曾有2年餐飲打工經驗但尚無實際正職工作經驗</li>
+                        <li>程式能力尚未精熟</li>
+                        <li>無正式佈署上線專案的經驗</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script></script>
+</body>
+</html>

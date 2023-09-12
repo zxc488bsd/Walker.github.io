@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .container {
+        width: 500px;
+        height: 500px;
+        background-color: aquamarine;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .lattice {
+        background-color: gray;
+        width: 33%;
+        height: 33%;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .blue {
+        background-color: blue;
+    }
+
+    .gameOver {
+        width: 500px;
+        height: 500px;
+        background-color: rgba(235, 235, 235, 0.7);
+        z-index: 1;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .gameText {
+        font-size: 35px;
+    }
+
+    .gameOverButton {
+        margin: 10px;
+        font-size: 20px;
+        text-decoration: none;
+        color: black;
+        transition: all 0.3s;
+        padding: 10px;
+        background-color: white;
+        border-radius: 9999px;
+    }
+
+    .gameOverButton:hover {
+        color: rgb(245, 12, 8);
+    }
+</style>
+
+<body>
+
+
+
+    <div class="container">
+
+        <div class="lattice" id='1'></div>
+        <div class="lattice" id="2"></div>
+        <div class="lattice" id="3"></div>
+        <div class="lattice" id="4"></div>
+        <div class="lattice" id="5"></div>
+        <div class="lattice" id="6"></div>
+        <div class="lattice" id="7"></div>
+        <div class="lattice" id="8"></div>
+        <div class="lattice" id="9"></div>
+    </div>
+
+
+    <script>
+
+
+        //玩家寫入格子
+        //確認是否連線
+        //確認是否平手
+        //玩家切換
+
+        let win;
+
+        let tie;
+
+        let gameMap = [
+
+            {
+                position: 1,
+                status: null
+            },
+
+            {
+                position: 2,
+                status: null
+            },
+
+            {
+                position: 3,
+                status: null
+            },
+
+            {
+                position: 4,
+                status: null
+            },
+
+            {
+                position: 5,
+                status: null
+            },
+
+            {
+                position: 6,
+                status: null
+            },
+
+            {
+                position: 7,
+                status: null
+            },
+
+            {
+                position: 8,
+                status: null
+            },
+
+            {
+                position: 9,
+                status: null
+            }
+
+        ];
+
+
+
+        //組合  123  , 456 , 789 , 147 , 258 , 369 , 159 , 357 
+
+        let player = 1
+
+        let player2 = -1
+
+        let status = true;
+
+        //電腦執行
+        function computerPlayer(randomNumber) {
+
+            if (status === false) {
+                status = true
+                let key = gameMap.findIndex((value) => {
+                    return value.position === randomNumber
+                })
+                if (gameMap[key].status == null) {
+                    gameMap[key].status = player2
+                } else {
+                    status = false
+                    getRandom()
+                    return
+                }
+
+                winner()
+                tieAddArray()
+                isTie()
+                return
+            }
+
+        }
+        function getRandom() {
+            let randomNumber
+            randomNumber = Math.floor(Math.random() * 9) + 1
+
+            computerPlayer(randomNumber)
+        }
+
+
+        //玩家執行
+        function playGame(num) {
+
+            if (status === true) {
+
+                status = false
+
+                let key = gameMap.findIndex((value) => {
+
+                    return value.position === num
+
+                })
+
+                if (gameMap[key].status === null) {
+                    gameMap[key].status = player
+                } else {
+                    status = true
+                    return
+                }
+
+                winner()
+                tieAddArray()
+                isTie()
+                getRandom()
+                return
+            }
+
+
+
+        }
+        //判斷勝利
+        function winner() {
+
+            win = [
+                [gameMap[0], gameMap[1], gameMap[2]],
+                [gameMap[3], gameMap[4], gameMap[5]],
+                [gameMap[6], gameMap[7], gameMap[8]],
+                [gameMap[0], gameMap[3], gameMap[6]],
+                [gameMap[1], gameMap[4], gameMap[7]],
+                [gameMap[2], gameMap[5], gameMap[8]],
+                [gameMap[0], gameMap[4], gameMap[8]],
+                [gameMap[2], gameMap[4], gameMap[6]]
+            ]
+
+
+            win.forEach(value => {
+
+                let winNumber = value[0].status + value[1].status + value[2].status
+
+                if (winNumber === 3) {
+                    reviewGameFun()
+                    gameOver("玩家獲勝")
+                }
+
+                if (winNumber === -3) {
+                    reviewGameFun()
+                    gameOver("電腦獲勝")
+
+                }
+
+            })
+
+        }
+        //抓取還沒有被選擇的位置
+        function tieAddArray() {
+
+            tie = gameMap.filter((value) => {
+                return value.status === null
+            })
+
+
+        }
+        //位置全部被填入後，判斷平手
+        function isTie() {
+            if (tie.length === 0) {
+                reviewGameFun()
+                gameOver("平手")
+            }
+
+        }
+        //全部重來
+        function reviewGameFun() {
+            gameMap = [
+
+                {
+                    position: 1,
+                    status: null
+                },
+
+                {
+                    position: 2,
+                    status: null
+                },
+
+                {
+                    position: 3,
+                    status: null
+                },
+
+                {
+                    position: 4,
+                    status: null
+                },
+
+                {
+                    position: 5,
+                    status: null
+                },
+
+                {
+                    position: 6,
+                    status: null
+                },
+
+                {
+                    position: 7,
+                    status: null
+                },
+
+                {
+                    position: 8,
+                    status: null
+                },
+
+                {
+                    position: 9,
+                    status: null
+                }
+
+            ]
+            status = true
+        }
+
+
+
+
+        //顯示
+
+        let allEl = document.querySelectorAll('.lattice')
+
+        allEl.forEach(value => {
+
+            value.addEventListener('click', (e) => {
+                let number = parseInt(value.id)
+                // playGame(number)
+
+                gameMap.forEach(col => {
+                    playGame(number)
+                    if (col.status === 1) {
+                        let positionNumber = col.position
+                        let getDiv = document.getElementById(`${positionNumber}`)
+                        if (getDiv.getAttribute('value') === null) {
+                            getDiv.setAttribute('value', '1')
+                            getDiv.classList.add('red')
+                        }
+
+                    }
+
+                    if (col.status === -1) {
+                        let positionNumber = col.position
+                        let getDiv = document.getElementById(`${positionNumber}`)
+                        if (getDiv.getAttribute('value') === null) {
+                            getDiv.setAttribute('value', '1')
+                            getDiv.classList.add('blue')
+                        }
+                    }
+                })
+
+
+            })
+        })
+
+
+
+        // gameOver畫面
+        let containerEl = document.querySelector('.container')
+        console.log(containerEl)
+
+        function gameOver(who) {
+
+            let creatGameOverEl = document.createElement('div')
+            creatGameOverEl.classList.add('gameOver')
+            let divGameText = document.createElement('div')
+            divGameText.innerText = `遊戲結束${who}`
+            divGameText.classList.add('gameText')
+            let gameOverButton = document.createElement('a')
+            gameOverButton.innerText = '重新開始'
+            gameOverButton.setAttribute('href', '')
+            gameOverButton.classList.add('gameOverButton')
+
+
+            creatGameOverEl.append(divGameText)
+            creatGameOverEl.append(gameOverButton)
+
+            containerEl.append(creatGameOverEl)
+        }
+
+
+    </script>
+
+</body>
+
+</html>

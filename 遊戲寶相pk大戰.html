@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            margin: 0;
+            position: relative;
+        }
+
+        #map {
+            background-color: gray;
+            position: relative;
+            width: 500px;
+            height: 500px;
+        }
+
+        .player {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: aqua;
+        }
+
+        .player2 {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background-color: rgb(255, 72, 0);
+
+        }
+
+        .treasureStyle {
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+            position: absolute;
+        }
+
+        #creatPlayer {
+            margin-top: 5px;
+            width: 500px;
+            height: 30px;
+            font-size: 20px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div id="map">
+
+    </div>
+
+    <button id="creatPlayer">生成玩家</button>
+    <h3 id="score"></h3>
+    <h3 id="score2"></h3>
+
+
+    <script>
+
+        // */
+
+        /*-----------------------------------------------------
+        tool
+        ------------------------------------------------------*/
+        //新增玩家
+        class Player {
+            constructor() {
+                this.x = Math.floor(Math.random() * map.maxStepx) * map.stepx
+                this.y = Math.floor(Math.random() * map.maxStepx) * map.stepx
+            }
+
+            MoveUp() {
+                this.y -= map.stepx
+            }
+            MoveDown() {
+                this.y += map.stepx
+            }
+            MoveLeft() {
+                this.x -= map.stepx
+            }
+            MoveRight() {
+                this.x += map.stepx
+            }
+        }
+
+
+
+
+
+        /*-----------------------------------------------------
+        監聽區
+        ------------------------------------------------------*/
+        //地圖標籤
+        let mapElement = document.getElementById('map')
+
+        //分數標籤
+        let scoreElement = document.getElementById('score')
+        let scoreElement2 = document.getElementById('score2')
+        let score = 0
+        let score2 = 0
+
+        //按鈕標籤
+        let creatPlayerbuttonElement = document.getElementById('creatPlayer')
+
+        //獲取玩家的標籤
+        let getPlayer = document.getElementsByClassName('player')
+        let getPlayer2 = document.getElementsByClassName('player2')
+
+
+
+
+        /*-----------------------------------------------------
+        資料層
+        ------------------------------------------------------*/
+
+        //遊戲地圖的資料
+        let map = {
+            width: 500,
+            height: 500,
+            maxStepx: 10,
+            stepx: 50
+        }
+
+        //遊戲玩家資料
+
+        //生成玩家
+        let player1
+        let player2
+        function creatPlayerClass() {
+
+            if (player1 != undefined && player2 != undefined) {
+                alert('玩家人數已滿')
+            }
+
+            if (player1 != undefined && player2 == undefined) {
+                player2 = new Player()
+                let creatPlayerDiv2 = document.createElement('div')
+                creatPlayerDiv2.classList.add('player2')
+                mapElement.append(creatPlayerDiv2)
+
+                getPlayer2[0].style.left = `${player2.x}px`
+                getPlayer2[0].style.top = `${player2.y}px`
+                alert('請使用WASD操控玩家二')
+            }
+
+            if (player1 == undefined) {
+
+                player1 = new Player()
+                let creatPlayerDiv = document.createElement('div')
+                creatPlayerDiv.classList.add('player')
+                mapElement.append(creatPlayerDiv)
+
+                getPlayer[0].style.left = `${player1.x}px`
+                getPlayer[0].style.top = `${player1.y}px`
+                alert('請使用上下左右操控玩家一')
+            }
+
+
+        }
+
+        //寶相儲存位置資訊，X,Y預設值為0
+        let treasurePosition = [
+            {
+                x: 0,
+                y: 0
+            },
+
+            {
+                x: 0,
+                y: 0
+            },
+
+            {
+                x: 0,
+                y: 0
+            }
+        ]
+        //隨機生成寶箱位置，並且讓她不互相重複撞到，以及出現在起始點，及最終點
+        function getTreasurePositionFunc() {
+            let tempTreasureListPostion = []
+
+            for (let i = 0; i < treasurePosition.length; i++) {
+                let objectNubmer = {
+                    x: Math.floor(Math.random() * map.maxStepx) * map.stepx,
+                    y: Math.floor(Math.random() * map.maxStepx) * map.stepx
+                }
+
+                if (objectNubmer.x === 0 && objectNubmer.y === 0) {
+                    i--
+                    continue
+                }
+
+                if (objectNubmer.x === 450 && objectNubmer.y === 450) {
+                    i--
+                    continue
+                }
+                if (i === 0) {
+                    tempTreasureListPostion.push(objectNubmer)
+                    continue
+                }
+
+                let status = false
+                for (let x = 0; x < tempTreasureListPostion.length; x++) {
+                    if (tempTreasureListPostion[x].x === objectNubmer.x && tempTreasureListPostion[x].y === objectNubmer.y) {
+                        status = true
+                        console.log('碰撞了')
+                    }
+                }
+
+                if (status === true) {
+                    i--
+                    continue
+                }
+
+                tempTreasureListPostion.push(objectNubmer)
+                continue
+            }
+            treasurePosition = tempTreasureListPostion
+        }
+
+
+
+
+
+
+
+        /*-----------------------------------------------------
+        顯示層
+        ------------------------------------------------------*/
+
+
+        //將寶箱放進畫面當中
+        function addTreasureInweb() {
+            for (let i = 0; i < treasurePosition.length; i++) {
+                let creatTreasureDiv = document.createElement('div')
+                creatTreasureDiv.classList.add('treasureStyle')
+                creatTreasureDiv.classList.add(i)
+                creatTreasureDiv.style.top = `${treasurePosition[i].y}px`
+                creatTreasureDiv.style.left = `${treasurePosition[i].x}px`
+                mapElement.append(creatTreasureDiv)
+            }
+        }
+        //當player的位置，抵達寶相的位置時
+        let removeNumber = 0; //當寶相被player碰到的次數計算
+        function checkBump() {
+            for (let i = 0; i < treasurePosition.length; i++) {
+                //玩家一碰撞到寶相
+                if (treasurePosition[i].x === player1.x && treasurePosition[i].y === player1.y) {
+                    treasurePosition[i] = {}
+                    removeNumber += 1
+                    let treasure = document.getElementsByClassName(`${i}`)
+                    treasure[0].remove()
+                    scoreElement.innerText = `藍色得分:${score += 1}`
+                }
+                // 玩家二碰撞到寶相
+                if (player2 != undefined) {
+                    if (treasurePosition[i].x === player2.x && treasurePosition[i].y === player2.y) {
+                        treasurePosition[i] = {}
+                        removeNumber += 1
+                        let treasure = document.getElementsByClassName(`${i}`)
+                        treasure[0].remove()
+                        scoreElement2.innerText = `紅色得分:${score2 += 1}`
+                    }
+                }
+            }
+            if (removeNumber === 3) {
+                getTreasurePositionFunc()
+                addTreasureInweb()
+                removeNumber = 0
+            }
+        }
+        //讓玩家一 ， 玩家二移動 
+        function playerMove(e) {
+
+            ////////////玩家一//////////
+            if (e.code === "ArrowUp") {
+                player1.MoveUp()
+                getPlayer[0].style.top = `${player1.y}px`
+                if (player1.y < 0) {
+                    player1.y = 450
+                    getPlayer[0].style.top = `${player1.y}px`
+                }
+            }
+
+            if (e.code === "ArrowDown") {
+                player1.MoveDown()
+                getPlayer[0].style.top = `${player1.y}px`
+                if (player1.y > 450) {
+                    player1.y = 0
+                    getPlayer[0].style.top = `${player1.y}px`
+                }
+            }
+
+            if (e.code === "ArrowLeft") {
+                player1.MoveLeft()
+                getPlayer[0].style.left = `${player1.x}px`
+                if (player1.x < 0) {
+                    player1.x = 450
+                    getPlayer[0].style.left = `${player1.x}px`
+                }
+            }
+
+            if (e.code === "ArrowRight") {
+                player1.MoveRight()
+                getPlayer[0].style.left = `${player1.x}px`
+                if (player1.x > 450) {
+                    player1.x = 0
+                    getPlayer[0].style.left = `${player1.x}px`
+                }
+            }
+            //////////玩家二//////////
+            if (e.code === "KeyW") {
+                player2.MoveUp()
+                getPlayer2[0].style.top = `${player2.y}px`
+                if (player2.y < 0) {
+                    player2.y = 450
+                    getPlayer2[0].style.top = `${player2.y}px`
+                }
+            }
+
+            if (e.code === "KeyS") {
+                player2.MoveDown()
+                getPlayer2[0].style.top = `${player2.y}px`
+                if (player2.y > 450) {
+                    player2.y = 0
+                    getPlayer2[0].style.top = `${player2.y}px`
+                }
+            }
+
+            if (e.code === "KeyA") {
+                player2.MoveLeft()
+                getPlayer2[0].style.left = `${player2.x}px`
+                if (player2.x < 0) {
+                    player2.x = 450
+                    getPlayer2[0].style.left = `${player2.x}px`
+                }
+            }
+            if (e.code === "KeyD") {
+                player2.MoveRight()
+                getPlayer2[0].style.left = `${player2.x}px`
+                if (player2.x > 450) {
+                    player2.x = 0
+                    getPlayer2[0].style.left = `${player2.x}px`
+                }
+            }
+
+            checkBump()
+        }
+
+        //新增寶箱位置
+        getTreasurePositionFunc()
+        //將寶相顯示在畫面
+        addTreasureInweb()
+        //點擊生成玩家
+        creatPlayerbuttonElement.addEventListener('click', creatPlayerClass)
+        //按鍵盤移動人物
+        document.addEventListener('keydown', playerMove)
+
+    </script>
+</body>
+
+</html>
